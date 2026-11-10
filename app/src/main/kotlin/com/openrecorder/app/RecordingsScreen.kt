@@ -7,9 +7,13 @@ package com.openrecorder.app
 import android.text.format.DateUtils
 import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +37,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -77,6 +82,10 @@ internal fun RecordingsScreen(
     loading: Boolean,
     loadFailed: Boolean,
     deleting: Boolean,
+    recordingState: Int,
+    countdownSeconds: Int?,
+    actionEnabled: Boolean,
+    onActionClick: () -> Unit,
     onOpenRecording: (RecordingItem) -> Unit,
     onDeleteRecordings: (List<RecordingItem>) -> Unit,
     onShareRecordings: (List<RecordingItem>) -> Unit,
@@ -266,12 +275,27 @@ internal fun RecordingsScreen(
                 },
             )
         },
+        floatingActionButton = {
+            if (!selectionMode) {
+                RecordActionFab(
+                    label = actionLabel(
+                        recordingState = recordingState,
+                        countdownSeconds = countdownSeconds,
+                    ),
+                    recording = recordingState == RecordingState.RECORDING ||
+                        recordingState == RecordingState.PAUSED,
+                    started = recordingState != RecordingState.IDLE || countdownSeconds != null,
+                    enabled = actionEnabled,
+                    onClick = onActionClick,
+                )
+            }
+        },
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
-                bottom = 24.dp,
+                bottom = 96.dp,
             ),
         ) {
             when {
@@ -326,6 +350,70 @@ internal fun RecordingsScreen(
             }
         }
     }
+}
+
+@Composable
+private fun RecordActionFab(
+    label: String,
+    recording: Boolean,
+    started: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    val targetContainerColor = when {
+        !enabled -> MaterialTheme.colorScheme.surfaceContainerHighest
+        recording -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.primaryContainer
+    }
+    val targetContentColor = when {
+        !enabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        recording -> MaterialTheme.colorScheme.onError
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
+    }
+    val containerColor by animateColorAsState(
+        targetValue = targetContainerColor,
+        animationSpec = tween(durationMillis = 220, easing = EaseInOut),
+        label = "recordFabContainerColor",
+    )
+    val contentColor by animateColorAsState(
+        targetValue = targetContentColor,
+        animationSpec = tween(durationMillis = 220, easing = EaseInOut),
+        label = "recordFabContentColor",
+    )
+
+    ExtendedFloatingActionButton(
+        onClick = { if (enabled) onClick() },
+        containerColor = containerColor,
+        contentColor = contentColor,
+        icon = {
+            Icon(
+                imageVector = if (started) RecorderIcons.Close else RecorderIcons.Play,
+                contentDescription = null,
+            )
+        },
+        text = {
+            AnimatedContent(
+                targetState = label,
+                transitionSpec = {
+                    fadeIn(tween(durationMillis = 180, delayMillis = 40)) togetherWith
+                        fadeOut(tween(durationMillis = 120))
+                },
+                label = "recordFabLabel",
+            ) { currentLabel ->
+                Text(text = currentLabel)
+            }
+        },
+    )
+}
+
+@Composable
+private fun actionLabel(recordingState: Int, countdownSeconds: Int?): String = when {
+    countdownSeconds != null || recordingState == RecordingState.PREPARING ->
+        stringResource(R.string.cancel_recording)
+    recordingState == RecordingState.RECORDING || recordingState == RecordingState.PAUSED ->
+        stringResource(R.string.stop_recording)
+    recordingState == RecordingState.SAVING -> stringResource(R.string.status_saving)
+    else -> stringResource(R.string.start_recording)
 }
 
 @Composable

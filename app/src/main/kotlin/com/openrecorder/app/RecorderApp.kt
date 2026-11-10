@@ -36,31 +36,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import kotlin.math.abs
 
-private const val RECORD_PAGE = 0
+private const val RECORDINGS_PAGE = 0
 private const val SETTINGS_PAGE = 1
-private const val RECORDINGS_PAGE = 2
-private const val PAGE_COUNT = 3
+private const val PAGE_COUNT = 2
 
 @Composable
 internal fun RecorderApp(
     onRecordingsVisible: () -> Unit,
-    recordContent: @Composable () -> Unit,
-    settingsContent: @Composable () -> Unit,
     recordingsContent: @Composable () -> Unit,
+    settingsContent: @Composable () -> Unit,
 ) {
     val pagerState = rememberPagerState(
-        initialPage = RECORD_PAGE,
+        initialPage = RECORDINGS_PAGE,
         pageCount = { PAGE_COUNT },
     )
     val recorderPagerState = rememberRecorderPagerState(pagerState)
-    val recordLabel = stringResource(R.string.nav_record)
-    val settingsLabel = stringResource(R.string.nav_settings)
     val recordingsLabel = stringResource(R.string.nav_recordings)
-    val navigationItems = remember(recordLabel, settingsLabel, recordingsLabel) {
+    val settingsLabel = stringResource(R.string.nav_settings)
+    val navigationItems = remember(recordingsLabel, settingsLabel) {
         listOf(
-            recordLabel to RecorderIcons.Play,
-            settingsLabel to RecorderIcons.Settings,
             recordingsLabel to RecorderIcons.Recordings,
+            settingsLabel to RecorderIcons.Settings,
         )
     }
 
@@ -100,9 +96,8 @@ internal fun RecorderApp(
             key = { page -> page },
         ) { page ->
             when (page) {
-                RECORD_PAGE -> recordContent()
-                SETTINGS_PAGE -> settingsContent()
-                else -> recordingsContent()
+                RECORDINGS_PAGE -> recordingsContent()
+                else -> settingsContent()
             }
         }
     }

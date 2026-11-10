@@ -151,15 +151,6 @@ class MainActivity : ComponentActivity() {
             ) {
                 RecorderApp(
                     onRecordingsVisible = { loadRecordings() },
-                    recordContent = {
-                        val recordState = recordScreenUiState.value
-                        RecorderScreen(
-                            recordingState = recordState.recordingState,
-                            countdownSeconds = recordState.countdownSeconds,
-                            actionEnabled = recordState.recordingState != RecordingState.SAVING,
-                            onActionClick = ::onRecordButtonClicked,
-                        )
-                    },
                     settingsContent = {
                         val settingsState = recordingSettingsUiState.value
                         val recordState = recordScreenUiState.value
@@ -326,11 +317,16 @@ class MainActivity : ComponentActivity() {
                     },
                     recordingsContent = {
                         val state = recordingsUiState.value
+                        val recordState = recordScreenUiState.value
                         RecordingsScreen(
                             recordings = state.recordings,
                             loading = state.loading,
                             loadFailed = state.loadFailed,
                             deleting = state.deleting,
+                            recordingState = recordState.recordingState,
+                            countdownSeconds = recordState.countdownSeconds,
+                            actionEnabled = recordState.recordingState != RecordingState.SAVING,
+                            onActionClick = ::onRecordButtonClicked,
                             onOpenRecording = ::openRecording,
                             onDeleteRecordings = ::deleteRecordings,
                             onShareRecordings = ::shareRecordings,
