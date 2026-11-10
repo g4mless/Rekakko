@@ -1,8 +1,8 @@
-HSPLcom/openrecorder/app/**->**(**)**
-Lcom/openrecorder/app/MainActivity;
-Lcom/openrecorder/app/RecorderAppKt;
-Lcom/openrecorder/app/RecorderIcons;
-Lcom/openrecorder/app/RecorderThemeKt;
-Lcom/openrecorder/app/RecorderPreferences;
-Lcom/openrecorder/app/ThemeMode;
-Lcom/openrecorder/app/RecordingState;
+HSPLcom/g4mless/rekakko/**->**(**)**
+Lcom/g4mless/rekakko/MainActivity;
+Lcom/g4mless/rekakko/RecorderAppKt;
+Lcom/g4mless/rekakko/RecorderIcons;
+Lcom/g4mless/rekakko/RecorderThemeKt;
+Lcom/g4mless/rekakko/RecorderPreferences;
+Lcom/g4mless/rekakko/ThemeMode;
+Lcom/g4mless/rekakko/RecordingState;

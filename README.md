@@ -1,4 +1,4 @@
-# Open Recorder
+# Rekakko
 
 An open-source screen recorder for Android with internal audio and a modern interface. No ads, no trackers and no internet access.
 
@@ -6,7 +6,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 
 ### Recording
 
-- Record your screen to MP4 files saved in `Movies/Open Recorder`
+- Record your screen to MP4 files saved in `Movies/Rekakko`
 - **Audio sources:** no audio, internal audio, microphone, or microphone and internal audio as independent AAC tracks
 - **Audio sample rate:** 44.1 kHz or 48 kHz
 - **Video codec:** H.264 or H.265
@@ -29,7 +29,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 
 ### Recordings tab
 
-- Lists the videos recorded by Open Recorder, with total count
+- Lists the videos recorded by Rekakko, with total count
 - Sort by date, size, or duration
 - Open a video in your default player
 - Share one or multiple selected recordings with other apps
@@ -53,7 +53,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 - No ads, no analytics, no crash reporting, no tracking
 - Backups are disabled
 - Recordings stay on your device
-- Other apps are not allowed to capture Open Recorder's audio
+- Other apps are not allowed to capture Rekakko's audio
 
 ## Permissions
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.OpenRecorder" parent="android:style/Theme.Material.Light.NoActionBar">
+    <style name="Theme.Rekakko" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -8,11 +8,11 @@
         <item name="android:windowBackground">@color/splash_background</item>
     </style>
 
-    <style name="Theme.OpenRecorder.Starting" parent="Theme.OpenRecorder">
+    <style name="Theme.Rekakko.Starting" parent="Theme.Rekakko">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="Theme.OpenRecorder.Tile" parent="android:style/Theme.Translucent.NoTitleBar">
+    <style name="Theme.Rekakko.Tile" parent="android:style/Theme.Translucent.NoTitleBar">
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowDisablePreview">true</item>

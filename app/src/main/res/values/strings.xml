@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Open Recorder</string>
+    <string name="app_name">Rekakko</string>
     <string name="nav_record">Record</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_recordings">Recordings</string>
@@ -14,7 +14,7 @@
     <string name="about_license_value" translatable="false">GPL-3</string>
     <string name="about_version">Version</string>
     <string name="about_version_value" translatable="false">1.0.3</string>
-    <string name="version_tap_thanks">Thanks for using Open Recorder!</string>
+    <string name="version_tap_thanks">Thanks for using Rekakko!</string>
     <string name="open_source_licenses">Open source licenses</string>
     <string name="open_source_license_summary">%1$s, %2$s</string>
     <string name="navigate_back">Go back</string>
@@ -162,7 +162,7 @@
     <string name="status_paused_summary">Resume from the notification or use the button below to stop.</string>
     <string name="status_saving_summary">The video is being processed and saved on your device.</string>
     <string name="status_countdown_summary">Open the screen you want to capture.</string>
-    <string name="permission_denied">Open Recorder permission was cancelled</string>
+    <string name="permission_denied">Rekakko permission was cancelled</string>
     <string name="capture_permission_unavailable">Screen capture is unavailable on this device.</string>
     <string name="audio_permission_denied">The selected audio option requires microphone permission.</string>
     <string name="audio_capture_failed">Audio capture failed. The video will be saved without audio.</string>
@@ -170,7 +170,7 @@
     <string name="pause_recording_failed">Could not pause the recording.</string>
     <string name="resume_recording_failed">Could not resume the recording.</string>
     <string name="stop_recording_failed">Could not stop the recording.</string>
-    <string name="saved_success">Recording saved in Movies/Open Recorder.</string>
+    <string name="saved_success">Recording saved in Movies/Rekakko.</string>
     <string name="notification_channel">Screen recording</string>
     <string name="notification_recording_title">Recording your screen</string>
     <string name="notification_recording_text">Recording in progress.</string>
@@ -190,7 +190,7 @@
     <string name="recording_deleted">Recording deleted.</string>
     <string name="recording_delete_failed">Could not delete the recording.</string>
     <string name="share_video">Share recording</string>
-    <string name="quick_settings_tile_label">Open Recorder</string>
+    <string name="quick_settings_tile_label">Rekakko</string>
     <string name="quick_settings_preparing">Starting</string>
     <string name="quick_settings_recording">Recording</string>
     <string name="quick_settings_paused">Paused</string>

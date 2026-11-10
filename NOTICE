@@ -1,7 +1,7 @@
-Open Recorder
+Rekakko
 Copyright 2026
 
-Open Recorder is distributed under the GNU General Public License, version 3
+Rekakko is distributed under the GNU General Public License, version 3
 only (GPL-3.0-only). See LICENSE for the complete terms.
 
 Third-party notices
@@ -32,5 +32,5 @@ The Gradle wrapper files are licensed under the Apache License 2.0.
 
 The complete Apache License 2.0 text for the applicable third-party components
 is in LICENSES/Apache-2.0.txt. Third-party components retain their original
-licenses; the GPL-3.0-only designation above applies to Open Recorder's own
+licenses; the GPL-3.0-only designation above applies to Rekakko's own
 code and to the adapted AsteriskNG portions.

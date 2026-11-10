@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace 'com.openrecorder.app'
+    namespace 'com.g4mless.rekakko'
     compileSdk 37
 
     defaultConfig {
-        applicationId 'com.openrecorder.app'
+        applicationId 'com.g4mless.rekakko'
         minSdk 29
         targetSdk 36
-        versionCode 10003
-        versionName '1.0.3'
+        versionCode 10000
+        versionName '1.0'
     }
 
     buildTypes {

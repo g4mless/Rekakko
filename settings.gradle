@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "OpenRecorder"
+rootProject.name = "Rekakko"
 include(":app")

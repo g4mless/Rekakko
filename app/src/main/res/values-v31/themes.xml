@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.OpenRecorder.Starting" parent="Theme.OpenRecorder">
+    <style name="Theme.Rekakko.Starting" parent="Theme.Rekakko">
         <item name="android:windowBackground">@color/splash_background</item>
         <item name="android:windowSplashScreenBackground">@color/splash_background</item>
         <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
