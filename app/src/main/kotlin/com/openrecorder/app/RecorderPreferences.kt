@@ -28,30 +28,6 @@ internal class RecorderPreferences(context: Context) {
         preferences.edit().putInt(KEY_THEME_MODE, ThemeMode.normalize(value)).apply()
     }
 
-    fun loadEnablePredictiveBack(): Boolean {
-        if (preferences.contains(KEY_ENABLE_PREDICTIVE_BACK)) {
-            return preferences.getBoolean(KEY_ENABLE_PREDICTIVE_BACK, false)
-        }
-
-        val enabled = if (preferences.contains(KEY_DISABLE_PREDICTIVE_BACK_LEGACY)) {
-            !preferences.getBoolean(KEY_DISABLE_PREDICTIVE_BACK_LEGACY, true)
-        } else {
-            false
-        }
-        preferences.edit()
-            .putBoolean(KEY_ENABLE_PREDICTIVE_BACK, enabled)
-            .putBoolean(KEY_DISABLE_PREDICTIVE_BACK_LEGACY, !enabled)
-            .apply()
-        return enabled
-    }
-
-    fun saveEnablePredictiveBack(value: Boolean) {
-        preferences.edit()
-            .putBoolean(KEY_ENABLE_PREDICTIVE_BACK, value)
-            .putBoolean(KEY_DISABLE_PREDICTIVE_BACK_LEGACY, !value)
-            .apply()
-    }
-
     fun loadAudioSource(): AudioSource = AudioSource.fromOrdinal(
         preferences.getInt(KEY_AUDIO_SOURCE, AudioSource.NONE.ordinal),
     )
@@ -161,8 +137,6 @@ internal class RecorderPreferences(context: Context) {
     private companion object {
         const val PREFERENCES_NAME = "recorder_preferences"
         const val KEY_THEME_MODE = "theme_mode"
-        const val KEY_ENABLE_PREDICTIVE_BACK = "enable_predictive_back"
-        const val KEY_DISABLE_PREDICTIVE_BACK_LEGACY = "disable_predictive_back"
         const val KEY_AUDIO_SOURCE = "audio_source"
         const val KEY_SAMPLE_RATE = "sample_rate"
         const val KEY_VIDEO_BITRATE = "video_bitrate"

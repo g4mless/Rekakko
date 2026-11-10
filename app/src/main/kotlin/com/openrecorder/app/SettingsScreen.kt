@@ -4,7 +4,6 @@ package com.openrecorder.app
 
 import android.content.Context
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOut
@@ -54,7 +53,6 @@ private val SettingsTransitionCornerRadius = 28.dp
 @Composable
 internal fun SettingsScreen(
     selectedThemeIndex: Int,
-    enablePredictiveBack: Boolean,
     selectedAudioIndex: Int,
     selectedSampleRateIndex: Int,
     selectedVideoResolutionIndex: Int,
@@ -68,7 +66,6 @@ internal fun SettingsScreen(
     selectedOrientationIndex: Int,
     optionsEnabled: Boolean,
     onThemeSelected: (Int) -> Unit,
-    onEnablePredictiveBackChanged: (Boolean) -> Unit,
     onAudioSelected: (Int) -> Unit,
     onSampleRateSelected: (Int) -> Unit,
     onVideoResolutionSelected: (Int) -> Unit,
@@ -125,38 +122,32 @@ internal fun SettingsScreen(
     }
 
     if (showingSubpage) {
-        if (enablePredictiveBack) {
-            PredictiveBackHandler { progress ->
-                try {
-                    progress.collect { backEvent ->
-                        pageTransitionProgress.snapTo(
-                            1f - backEvent.progress.coerceIn(0f, 1f),
-                        )
-                    }
+        PredictiveBackHandler { progress ->
+            try {
+                progress.collect { backEvent ->
+                    pageTransitionProgress.snapTo(
+                        1f - backEvent.progress.coerceIn(0f, 1f),
+                    )
+                }
+                pageTransitionProgress.animateTo(
+                    targetValue = 0f,
+                    animationSpec = tween(
+                        durationMillis = SETTINGS_NAVIGATION_SETTLE_DURATION_MILLIS,
+                        easing = EaseInOut,
+                    ),
+                )
+                settingsPage = SETTINGS_PAGE_MAIN
+            } catch (cancellation: CancellationException) {
+                coroutineScope.launch {
                     pageTransitionProgress.animateTo(
-                        targetValue = 0f,
+                        targetValue = 1f,
                         animationSpec = tween(
                             durationMillis = SETTINGS_NAVIGATION_SETTLE_DURATION_MILLIS,
                             easing = EaseInOut,
                         ),
                     )
-                    settingsPage = SETTINGS_PAGE_MAIN
-                } catch (cancellation: CancellationException) {
-                    coroutineScope.launch {
-                        pageTransitionProgress.animateTo(
-                            targetValue = 1f,
-                            animationSpec = tween(
-                                durationMillis = SETTINGS_NAVIGATION_SETTLE_DURATION_MILLIS,
-                                easing = EaseInOut,
-                            ),
-                        )
-                    }
-                    throw cancellation
                 }
-            }
-        } else {
-            BackHandler {
-                closeSubpage()
+                throw cancellation
             }
         }
     }
@@ -274,12 +265,6 @@ internal fun SettingsScreen(
                             selectedIndex = selectedThemeIndex,
                             enabled = true,
                             onSelected = onThemeSelected,
-                        )
-                        SwitchPreference(
-                            title = stringResource(R.string.enable_predictive_back),
-                            summary = stringResource(R.string.enable_predictive_back_summary),
-                            checked = enablePredictiveBack,
-                            onCheckedChange = onEnablePredictiveBackChanged,
                         )
                     }
                 }

@@ -39,7 +39,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 
 - Light, dark, or follow-system themes
 - Dynamic color (Monet) variants of each theme
-- Optional predictive back gesture (off by default)
+- Predictive back gesture
 - Settings are saved between sessions
 
 ### About

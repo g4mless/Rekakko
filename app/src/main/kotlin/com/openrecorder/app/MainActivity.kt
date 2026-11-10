@@ -16,7 +16,6 @@ import android.os.SystemClock
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.IntentSenderRequest
@@ -24,10 +23,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -122,7 +119,6 @@ class MainActivity : ComponentActivity() {
         appUiState = mutableStateOf(
             AppUiState(
                 selectedThemeMode = recorderPreferences.loadThemeMode(),
-                enablePredictiveBack = recorderPreferences.loadEnablePredictiveBack(),
             ),
         )
         recordScreenUiState = mutableStateOf(
@@ -148,21 +144,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val appState = appUiState.value
-            val recordingSessionActive by remember {
-                derivedStateOf {
-                    val recordState = recordScreenUiState.value
-                    recordState.recordingState != RecordingState.IDLE ||
-                        recordState.countdownSeconds != null
-                }
-            }
             val systemDark = isSystemInDarkTheme()
-            BackHandler(enabled = !appState.enablePredictiveBack) {
-                if (recordingSessionActive) {
-                    moveTaskToBack(true)
-                } else {
-                    finish()
-                }
-            }
             RecorderTheme(
                 themeMode = appState.selectedThemeMode,
                 systemDark = systemDark,
@@ -185,7 +167,6 @@ class MainActivity : ComponentActivity() {
                             recordState.countdownSeconds == null
                         SettingsScreen(
                             selectedThemeIndex = appState.selectedThemeMode,
-                            enablePredictiveBack = appState.enablePredictiveBack,
                             selectedAudioIndex = AUDIO_SOURCES
                                 .indexOf(settingsState.selectedAudioSource)
                                 .coerceAtLeast(0),
@@ -216,10 +197,6 @@ class MainActivity : ComponentActivity() {
                                 val themeMode = ThemeMode.normalize(index)
                                 updateAppUiState { it.copy(selectedThemeMode = themeMode) }
                                 recorderPreferences.saveThemeMode(themeMode)
-                            },
-                            onEnablePredictiveBackChanged = { enabled ->
-                                updateAppUiState { it.copy(enablePredictiveBack = enabled) }
-                                recorderPreferences.saveEnablePredictiveBack(enabled)
                             },
                             onAudioSelected = { index ->
                                 if (optionsEnabled) {
@@ -835,7 +812,6 @@ class MainActivity : ComponentActivity() {
 @Immutable
 private data class AppUiState(
     val selectedThemeMode: Int,
-    val enablePredictiveBack: Boolean,
 )
 
 @Immutable
