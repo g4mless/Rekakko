@@ -23,15 +23,12 @@ internal fun RecorderTheme(
 ) {
     val normalizedMode = ThemeMode.normalize(themeMode)
     val resolvedDark = when (normalizedMode) {
-        ThemeMode.LIGHT, ThemeMode.MONET_LIGHT -> false
-        ThemeMode.DARK, ThemeMode.MONET_DARK -> true
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
         else -> systemDark
     }
     val context = LocalContext.current
-    val useDynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && when (normalizedMode) {
-        ThemeMode.MONET_SYSTEM, ThemeMode.MONET_LIGHT, ThemeMode.MONET_DARK -> true
-        else -> false
-    }
+    val useDynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colorScheme = when {
         useDynamicColor && resolvedDark -> dynamicDarkColorScheme(context)
         useDynamicColor -> dynamicLightColorScheme(context)

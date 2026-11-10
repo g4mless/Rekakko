@@ -8,11 +8,13 @@ internal object ThemeMode {
     const val SYSTEM = 0
     const val LIGHT = 1
     const val DARK = 2
-    const val MONET_SYSTEM = 3
-    const val MONET_LIGHT = 4
-    const val MONET_DARK = 5
 
-    fun normalize(value: Int): Int = if (value in SYSTEM..MONET_DARK) value else SYSTEM
+    // Values 3..5 were the former Monet variants; every mode now uses dynamic color.
+    fun normalize(value: Int): Int = when (value) {
+        in SYSTEM..DARK -> value
+        in 3..5 -> value - 3
+        else -> SYSTEM
+    }
 }
 
 internal class RecorderPreferences(context: Context) {

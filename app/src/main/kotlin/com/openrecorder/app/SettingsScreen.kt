@@ -168,9 +168,6 @@ internal fun SettingsScreen(
             context.getString(R.string.theme_system),
             context.getString(R.string.theme_light),
             context.getString(R.string.theme_dark),
-            context.getString(R.string.theme_monet_system),
-            context.getString(R.string.theme_monet_light),
-            context.getString(R.string.theme_monet_dark),
         )
     }
     val audioOptions = remember(context) {

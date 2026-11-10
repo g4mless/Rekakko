@@ -73,9 +73,6 @@
     <string name="theme_system">Follow system</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="theme_monet_system">Follow system (Monet)</string>
-    <string name="theme_monet_light">Light (Monet)</string>
-    <string name="theme_monet_dark">Dark (Monet)</string>
     <string name="enable_predictive_back">Enable predictive back gesture</string>
     <string name="enable_predictive_back_summary">Preview the destination while swiping back.</string>
     <string name="sample_rate_label">Sample rate</string>
