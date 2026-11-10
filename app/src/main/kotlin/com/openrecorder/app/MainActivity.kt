@@ -122,7 +122,6 @@ class MainActivity : ComponentActivity() {
         appUiState = mutableStateOf(
             AppUiState(
                 selectedThemeMode = recorderPreferences.loadThemeMode(),
-                pageScale = recorderPreferences.loadPageScale(),
                 enablePredictiveBack = recorderPreferences.loadEnablePredictiveBack(),
             ),
         )
@@ -166,7 +165,6 @@ class MainActivity : ComponentActivity() {
             }
             RecorderTheme(
                 themeMode = appState.selectedThemeMode,
-                pageScale = appState.pageScale,
                 systemDark = systemDark,
             ) {
                 RecorderApp(
@@ -187,11 +185,6 @@ class MainActivity : ComponentActivity() {
                             recordState.countdownSeconds == null
                         SettingsScreen(
                             selectedThemeIndex = appState.selectedThemeMode,
-                            pageScale = appState.pageScale,
-                            onPageScaleSelected = { scale ->
-                                updateAppUiState { it.copy(pageScale = scale) }
-                                recorderPreferences.savePageScale(scale)
-                            },
                             enablePredictiveBack = appState.enablePredictiveBack,
                             selectedAudioIndex = AUDIO_SOURCES
                                 .indexOf(settingsState.selectedAudioSource)
@@ -842,7 +835,6 @@ class MainActivity : ComponentActivity() {
 @Immutable
 private data class AppUiState(
     val selectedThemeMode: Int,
-    val pageScale: Int,
     val enablePredictiveBack: Boolean,
 )
 

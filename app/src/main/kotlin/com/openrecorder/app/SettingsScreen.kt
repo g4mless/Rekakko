@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +47,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlin.math.roundToInt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -66,7 +64,6 @@ import top.yukonga.miuix.kmp.basic.TopAppBar
 import top.yukonga.miuix.kmp.popup.OverlayDropdownPopup
 import top.yukonga.miuix.kmp.preference.ArrowPreference
 import top.yukonga.miuix.kmp.preference.OverlayDropdownPreference
-import top.yukonga.miuix.kmp.preference.SliderPreference
 import top.yukonga.miuix.kmp.preference.SwitchPreference
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.overScrollVertical
@@ -85,8 +82,6 @@ private val SettingsTransitionCornerRadius = 28.dp
 @Composable
 internal fun SettingsScreen(
     selectedThemeIndex: Int,
-    pageScale: Int,
-    onPageScaleSelected: (Int) -> Unit,
     enablePredictiveBack: Boolean,
     selectedAudioIndex: Int,
     selectedSampleRateIndex: Int,
@@ -117,7 +112,6 @@ internal fun SettingsScreen(
     onViewLicense: () -> Unit,
     onOpenExternalUrl: (String) -> Unit,
 ) {
-    var pageScaleSlider by remember(pageScale) { mutableFloatStateOf(pageScale.toFloat()) }
     var settingsPage by rememberSaveable { mutableIntStateOf(SETTINGS_PAGE_MAIN) }
     var versionTapCount by rememberSaveable { mutableIntStateOf(0) }
     var popupDismissRequestKey by remember { mutableIntStateOf(0) }
@@ -318,17 +312,6 @@ internal fun SettingsScreen(
                             dismissRequestKey = popupDismissRequestKey,
                             onExpandedChange = { settingsPopupExpanded = it },
                             onSelected = onThemeSelected,
-                        )
-                        SliderPreference(
-                            title = stringResource(R.string.page_scale_label),
-                            summary = "${pageScaleSlider.roundToInt()}%",
-                            value = pageScaleSlider,
-                            valueRange = 90f..110f,
-                            steps = 19,
-                            onValueChange = { pageScaleSlider = it },
-                            onValueChangeFinished = {
-                                onPageScaleSelected(pageScaleSlider.roundToInt().coerceIn(90, 110))
-                            },
                         )
                         SwitchPreference(
                             title = stringResource(R.string.enable_predictive_back),
