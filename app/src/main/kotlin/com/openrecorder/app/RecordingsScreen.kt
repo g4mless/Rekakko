@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-only
+// SPDX-License-Identifier: GPL-3.0-only
 // Adapted from AsteriskNG 1.4.2.
 // Copyright 2026, AsteriskNG contributors
 

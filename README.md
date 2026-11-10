@@ -1,4 +1,4 @@
-﻿# Open Recorder
+# Open Recorder
 
 An open-source screen recorder for Android with internal audio and a modern interface. No ads, no trackers and no internet access.
 
