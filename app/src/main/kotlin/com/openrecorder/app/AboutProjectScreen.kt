@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only
+﻿// SPDX-License-Identifier: GPL-3.0-only
 
 package com.openrecorder.app
 
@@ -15,6 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,19 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import top.yukonga.miuix.kmp.basic.BasicComponent
-import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.Icon
-import top.yukonga.miuix.kmp.basic.IconButton
-import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.TopAppBar
-import top.yukonga.miuix.kmp.theme.MiuixTheme
-import top.yukonga.miuix.kmp.utils.overScrollVertical
-import top.yukonga.miuix.kmp.utils.scrollEndHaptic
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AboutProjectScreen(
     modifier: Modifier = Modifier,
@@ -50,14 +47,14 @@ internal fun AboutProjectScreen(
     onViewLicense: () -> Unit,
     onVersionClick: () -> Unit,
 ) {
-    val scrollBehavior = MiuixScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val layoutDirection = LocalLayoutDirection.current
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.about_this_project),
+            LargeTopAppBar(
+                title = { Text(stringResource(R.string.about_this_project)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -66,7 +63,7 @@ internal fun AboutProjectScreen(
                             modifier = Modifier.graphicsLayer {
                                 if (layoutDirection == LayoutDirection.Rtl) scaleX = -1f
                             },
-                            tint = MiuixTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 },
@@ -75,11 +72,7 @@ internal fun AboutProjectScreen(
         },
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .scrollEndHaptic()
-                .overScrollVertical()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding() + 12.dp,
                 bottom = 28.dp,
@@ -90,23 +83,19 @@ internal fun AboutProjectScreen(
             }
 
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp),
-                ) {
-                    BasicComponent(
+                PreferenceCard {
+                    BasicPreference(
                         title = stringResource(R.string.view_on_github),
                         onClick = onViewOnGitHub,
                         onClickLabel = stringResource(R.string.view_on_github),
                     )
-                    BasicComponent(
+                    BasicPreference(
                         title = stringResource(R.string.about_license),
                         summary = stringResource(R.string.about_license_value),
                         onClick = onViewLicense,
                         onClickLabel = stringResource(R.string.open_license),
                     )
-                    BasicComponent(
+                    BasicPreference(
                         title = stringResource(R.string.about_version),
                         summary = stringResource(R.string.about_version_value),
                         onClick = onVersionClick,
@@ -143,20 +132,18 @@ private fun AboutProjectHeader() {
         Spacer(Modifier.height(24.dp))
         Text(
             text = stringResource(R.string.app_name),
-            style = MiuixTheme.textStyles.main.copy(
-                fontSize = 26.sp,
-                lineHeight = 32.sp,
+            style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             ),
-            color = MiuixTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(Modifier.height(6.dp))
         Text(
             text = stringResource(R.string.about_tagline),
             modifier = Modifier.padding(horizontal = 24.dp),
-            style = MiuixTheme.textStyles.body2.copy(textAlign = TextAlign.Center),
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only
+﻿// SPDX-License-Identifier: GPL-3.0-only
 
 package com.openrecorder.app
 
@@ -24,6 +24,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -36,17 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.CardDefaults
-import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.basic.SmallTitle
-import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.TopAppBar
-import top.yukonga.miuix.kmp.theme.MiuixTheme
-import top.yukonga.miuix.kmp.utils.overScrollVertical
-import top.yukonga.miuix.kmp.utils.scrollEndHaptic
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RecorderScreen(
     recordingState: Int,
@@ -54,29 +53,26 @@ internal fun RecorderScreen(
     actionEnabled: Boolean,
     onActionClick: () -> Unit,
 ) {
-    val scrollBehavior = MiuixScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.record_title),
+            LargeTopAppBar(
+                title = { Text(stringResource(R.string.record_title)) },
                 scrollBehavior = scrollBehavior,
             )
         },
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .scrollEndHaptic()
-                .overScrollVertical()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
                 bottom = 28.dp,
             ),
         ) {
             item {
-                SmallTitle(text = stringResource(R.string.section_status))
+                PreferenceTitle(text = stringResource(R.string.section_status))
                 RecordingStatusCard(
                     recordingState = recordingState,
                     countdownSeconds = countdownSeconds,
@@ -105,12 +101,12 @@ private fun RecordingStatusCard(
     countdownSeconds: Int?,
 ) {
     val targetStatusColor = when {
-        countdownSeconds != null -> MiuixTheme.colorScheme.primary
-        recordingState == RecordingState.PREPARING -> MiuixTheme.colorScheme.primary
-        recordingState == RecordingState.RECORDING -> MiuixTheme.colorScheme.error
-        recordingState == RecordingState.PAUSED -> MiuixTheme.colorScheme.primary
-        recordingState == RecordingState.SAVING -> MiuixTheme.colorScheme.primary
-        else -> MiuixTheme.colorScheme.onSurfaceVariantSummary
+        countdownSeconds != null -> MaterialTheme.colorScheme.primary
+        recordingState == RecordingState.PREPARING -> MaterialTheme.colorScheme.primary
+        recordingState == RecordingState.RECORDING -> MaterialTheme.colorScheme.error
+        recordingState == RecordingState.PAUSED -> MaterialTheme.colorScheme.primary
+        recordingState == RecordingState.SAVING -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
     val statusColor by animateColorAsState(
         targetValue = targetStatusColor,
@@ -124,14 +120,15 @@ private fun RecordingStatusCard(
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
             .padding(bottom = 12.dp),
-        colors = CardDefaults.defaultColors(
-            color = statusColor.copy(alpha = 0.10f),
-            contentColor = MiuixTheme.colorScheme.onSurface,
+        colors = CardDefaults.cardColors(
+            containerColor = statusColor.copy(alpha = 0.10f),
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ),
-        insideMargin = PaddingValues(horizontal = 18.dp, vertical = 16.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
@@ -154,15 +151,15 @@ private fun RecordingStatusCard(
                 Column {
                     Text(
                         text = statusTitle(state.recordingState, state.countdownSeconds),
-                        style = MiuixTheme.textStyles.main,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
-                        color = MiuixTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(Modifier.height(2.dp))
                     Text(
                         text = statusSummary(state.recordingState, state.countdownSeconds),
-                        style = MiuixTheme.textStyles.body2,
-                        color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -178,14 +175,14 @@ private fun RecordActionCard(
     onClick: () -> Unit,
 ) {
     val targetBackgroundColor = when {
-        !enabled -> MiuixTheme.colorScheme.secondaryContainer
-        recording -> MiuixTheme.colorScheme.error
-        else -> MiuixTheme.colorScheme.primary
+        !enabled -> MaterialTheme.colorScheme.surfaceContainerHighest
+        recording -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.primary
     }
     val targetContentColor = when {
-        !enabled -> MiuixTheme.colorScheme.disabledOnSecondaryVariant
+        !enabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         recording -> Color.White
-        else -> MiuixTheme.colorScheme.onPrimary
+        else -> MaterialTheme.colorScheme.onPrimary
     }
     val backgroundColor by animateColorAsState(
         targetValue = targetBackgroundColor,
@@ -202,11 +199,10 @@ private fun RecordActionCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
-        colors = CardDefaults.defaultColors(
-            color = backgroundColor,
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor,
             contentColor = contentColor,
         ),
-        insideMargin = PaddingValues(0.dp),
     ) {
         Box(
             modifier = Modifier
@@ -229,7 +225,7 @@ private fun RecordActionCard(
             ) { currentLabel ->
                 Text(
                     text = currentLabel,
-                    style = MiuixTheme.textStyles.main,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = contentColor,
                 )

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Open Recorder</string>
     <string name="nav_record">Record</string>
@@ -24,18 +24,12 @@
     <string name="library_androidx_runtime_components" translatable="false">Additional AndroidX runtime components</string>
     <string name="library_navigation_event_compose" translatable="false">AndroidX NavigationEvent Compose</string>
     <string name="library_compose_foundation" translatable="false">Compose Foundation</string>
-    <string name="library_compose_material3_window_size_class" translatable="false">Compose Material 3 Window Size Class</string>
+    <string name="library_compose_material3" translatable="false">Compose Material 3</string>
     <string name="library_compose_runtime" translatable="false">Compose Runtime</string>
     <string name="library_compose_ui" translatable="false">Compose UI</string>
     <string name="library_jspecify" translatable="false">JSpecify</string>
     <string name="library_kotlin_stdlib" translatable="false">Kotlin Standard Library</string>
     <string name="library_kotlinx_coroutines" translatable="false">Kotlinx Coroutines</string>
-    <string name="library_material_kolor" translatable="false">MaterialKolor</string>
-    <string name="library_miuix_core" translatable="false">Miuix Core</string>
-    <string name="library_miuix_preference" translatable="false">Miuix Preference</string>
-    <string name="library_miuix_shader" translatable="false">Miuix Shader</string>
-    <string name="library_miuix_squircle" translatable="false">Miuix Squircle</string>
-    <string name="library_miuix_ui" translatable="false">Miuix UI</string>
     <string name="library_poko_annotations" translatable="false">Poko Annotations</string>
     <string name="library_aosp_systemui" translatable="false">Android Open Source Project (SystemUI)</string>
     <string name="library_asterisk_ng" translatable="false">AsteriskNG</string>
@@ -44,12 +38,10 @@
     <string name="license_mit" translatable="false">MIT</string>
     <string name="version_activity_compose" translatable="false">1.13.0</string>
     <string name="version_core_ktx" translatable="false">1.17.0</string>
+    <string name="version_compose_material3" translatable="false">1.4.0</string>
     <string name="version_compose" translatable="false">1.11.1</string>
-    <string name="version_compose_material3_window_size_class" translatable="false">1.9.0</string>
     <string name="version_navigation_event" translatable="false">1.1.2</string>
     <string name="version_kotlin" translatable="false">2.4.10</string>
-    <string name="version_material_kolor" translatable="false">4.1.1</string>
-    <string name="version_miuix" translatable="false">0.9.3</string>
     <string name="version_poko" translatable="false">0.21.1</string>
     <string name="version_jspecify" translatable="false">1.0.0</string>
     <string name="version_asterisk_ng" translatable="false">1.4.2</string>
@@ -62,8 +54,6 @@
     <string name="url_jspecify" translatable="false">https://jspecify.dev/</string>
     <string name="url_kotlin" translatable="false">https://kotlinlang.org/</string>
     <string name="url_kotlinx_coroutines" translatable="false">https://github.com/Kotlin/kotlinx.coroutines</string>
-    <string name="url_material_kolor" translatable="false">https://github.com/jordond/materialkolor</string>
-    <string name="url_miuix" translatable="false">https://github.com/compose-miuix-ui/miuix</string>
     <string name="url_poko" translatable="false">https://github.com/drewhamilton/Poko</string>
     <string name="url_aosp_license" translatable="false">https://source.android.com/docs/setup/about/licenses</string>
     <string name="url_asterisk_ng" translatable="false">https://github.com/Asterisk4Magisk/AsteriskNG/releases/tag/v1.4.2</string>
@@ -134,7 +124,7 @@
     <string name="orientation_landscape">Landscape</string>
     <string name="recordings_title">Recordings</string>
     <string name="recordings_count">Recorded Videos: %1$d</string>
-    <string name="recordings_loading">Loading recordings…</string>
+    <string name="recordings_loading">Loading recordingsâ€¦</string>
     <string name="recordings_empty">No recordings</string>
     <string name="recordings_empty_summary">Your recorded videos will be here.</string>
     <string name="recordings_sort_by">Sort by</string>
@@ -164,10 +154,10 @@
     <string name="cancel_recording">Cancel recording</string>
     <string name="stop_recording">Stop recording</string>
     <string name="status_idle">No recording in progress</string>
-    <string name="status_preparing">Preparing to record…</string>
+    <string name="status_preparing">Preparing to recordâ€¦</string>
     <string name="status_recording">Recording in progress</string>
     <string name="status_paused">Recording paused</string>
-    <string name="status_saving">Saving recording…</string>
+    <string name="status_saving">Saving recordingâ€¦</string>
     <string name="status_countdown">Recording starts in %1$d</string>
     <string name="status_idle_summary">Adjust your settings, then start your recording</string>
     <string name="status_preparing_summary">The capture will begin after the countdown.</string>
@@ -187,9 +177,9 @@
     <string name="notification_channel">Screen recording</string>
     <string name="notification_recording_title">Recording your screen</string>
     <string name="notification_recording_text">Recording in progress.</string>
-    <string name="notification_paused_time">Paused • %1$s</string>
-    <string name="notification_preparing">Preparing the recording…</string>
-    <string name="notification_saving">Processing and saving the video…</string>
+    <string name="notification_paused_time">Paused â€¢ %1$s</string>
+    <string name="notification_preparing">Preparing the recordingâ€¦</string>
+    <string name="notification_saving">Processing and saving the videoâ€¦</string>
     <string name="notification_saved_title">Recording saved</string>
     <string name="notification_saved_text">Tap to watch the video.</string>
     <string name="notification_error_title">Recording error</string>

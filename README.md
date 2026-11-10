@@ -1,4 +1,4 @@
-# Open Recorder
+﻿# Open Recorder
 
 An open-source screen recorder for Android with internal audio and a modern interface. No ads, no trackers and no internet access.
 
@@ -80,7 +80,7 @@ These come from Android itself, not from this app:
 ## Credits
 
 - Capture engine inspired by the Android Open Source Project (AOSP) SystemUI screen recorder
-- UI built with [Miuix](https://github.com/compose-miuix-ui/miuix) for Compose
+- UI built with [Material 3](https://developer.android.com/jetpack/androidx/releases/compose-material3) for Compose
 - Dynamic colors powered by [MaterialKolor](https://github.com/jordond/materialkolor)
 - Navigation and UI are adapted from [AsteriskNG](https://github.com/Asterisk4Magisk/AsteriskNG) (Copyright 2026, AsteriskNG contributors), licensed under GPL-3.0.
 See [NOTICE] (NOTICE) for full third-party attributions.

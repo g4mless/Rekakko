@@ -8,10 +8,6 @@ import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -33,12 +29,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.NavigationBar
-import top.yukonga.miuix.kmp.basic.NavigationBarDisplayMode
-import top.yukonga.miuix.kmp.basic.NavigationBarItem
-import top.yukonga.miuix.kmp.basic.NavigationItem
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.theme.MiuixTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import kotlin.math.abs
 
 private const val RECORD_PAGE = 0
@@ -63,9 +58,9 @@ internal fun RecorderApp(
     val recordingsLabel = stringResource(R.string.nav_recordings)
     val navigationItems = remember(recordLabel, settingsLabel, recordingsLabel) {
         listOf(
-            NavigationItem(recordLabel, RecorderIcons.Play),
-            NavigationItem(settingsLabel, RecorderIcons.Settings),
-            NavigationItem(recordingsLabel, RecorderIcons.Recordings),
+            recordLabel to RecorderIcons.Play,
+            settingsLabel to RecorderIcons.Settings,
+            recordingsLabel to RecorderIcons.Recordings,
         )
     }
 
@@ -82,24 +77,14 @@ internal fun RecorderApp(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            Box(
-                modifier = Modifier
-                    .background(MiuixTheme.colorScheme.surface)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = {},
-                    ),
-            ) {
-                NavigationBar(mode = NavigationBarDisplayMode.IconAndText) {
-                    navigationItems.forEachIndexed { index, item ->
-                        NavigationBarItem(
-                            selected = recorderPagerState.selectedPage == index,
-                            onClick = { recorderPagerState.animateToPage(index) },
-                            icon = item.icon,
-                            label = item.label,
-                        )
-                    }
+            NavigationBar {
+                navigationItems.forEachIndexed { index, (label, icon) ->
+                    NavigationBarItem(
+                        selected = recorderPagerState.selectedPage == index,
+                        onClick = { recorderPagerState.animateToPage(index) },
+                        icon = { Icon(imageVector = icon, contentDescription = null) },
+                        label = { Text(label) },
+                    )
                 }
             }
         },

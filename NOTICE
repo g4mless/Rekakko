@@ -1,4 +1,4 @@
-Open Recorder
+﻿Open Recorder
 Copyright 2026
 
 Open Recorder is distributed under the GNU General Public License, version 3
@@ -18,20 +18,15 @@ contributors, under the GNU General Public License, version 3. The complete
 terms are in LICENSE:
 https://github.com/Asterisk4Magisk/AsteriskNG
 
-The user interface uses Miuix for Compose Multiplatform, including its Core,
-Preference, Shader, Squircle, and UI modules, which are licensed under the
+The user interface uses Jetpack Compose Material 3, which is licensed under the
 Apache License 2.0:
-https://github.com/compose-miuix-ui/miuix
+https://developer.android.com/jetpack/androidx/releases/compose-material3
 
 AndroidX Activity, Annotation, Collection, Concurrent Futures, Core,
 Interpolator, Lifecycle, NavigationEvent, ProfileInstaller, SavedState,
-Startup, and Tracing; Compose Multiplatform UI, Foundation, Runtime, and
-Material 3 Window Size Class; JSpecify; Poko Annotations; the Kotlin standard
+Startup, and Tracing; Compose UI, Foundation, Runtime, and
+Material 3; JSpecify; Poko Annotations; the Kotlin standard
 library; and Kotlinx Coroutines are licensed under the Apache License 2.0.
-
-Miuix uses MaterialKolor 4.1.1, Copyright 2024 Jordon de Hoog, under the MIT
-License. The complete terms are in LICENSES/MIT.txt:
-https://github.com/jordond/materialkolor
 
 The Gradle wrapper files are licensed under the Apache License 2.0.
 

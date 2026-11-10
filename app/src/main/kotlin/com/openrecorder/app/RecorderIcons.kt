@@ -26,6 +26,18 @@ internal object RecorderIcons {
         }
     }
 
+    val ChevronRight: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+        buildIcon("ChevronRight") {
+            moveTo(8.59f, 16.59f)
+            lineTo(13.17f, 12f)
+            lineTo(8.59f, 7.41f)
+            lineTo(10f, 6f)
+            lineTo(16f, 12f)
+            lineTo(10f, 18f)
+            close()
+        }
+    }
+
     val Share: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
         buildIcon("Share") {
             moveTo(6f, 11f)

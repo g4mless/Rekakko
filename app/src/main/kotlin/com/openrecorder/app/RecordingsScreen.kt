@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only
+﻿// SPDX-License-Identifier: GPL-3.0-only
 // Adapted from AsteriskNG 1.4.2.
 // Copyright 2026, AsteriskNG contributors
 
@@ -27,6 +27,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,22 +63,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.unit.dp
-import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.DropdownEntry
-import top.yukonga.miuix.kmp.basic.DropdownItem
-import top.yukonga.miuix.kmp.basic.Icon
-import top.yukonga.miuix.kmp.basic.IconButton
-import top.yukonga.miuix.kmp.basic.InfiniteProgressIndicator
-import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.basic.SmallTitle
-import top.yukonga.miuix.kmp.basic.Text
-import top.yukonga.miuix.kmp.basic.TopAppBar
-import top.yukonga.miuix.kmp.anim.folmeSpring
-import top.yukonga.miuix.kmp.menu.OverlayIconDropdownMenu
-import top.yukonga.miuix.kmp.theme.MiuixTheme
-import top.yukonga.miuix.kmp.utils.overScrollVertical
-import top.yukonga.miuix.kmp.utils.scrollEndHaptic
 import java.text.DateFormat
 import java.util.Date
 
@@ -73,6 +70,7 @@ private const val SORT_BY_DATE = 0
 private const val SORT_BY_SIZE = 1
 private const val SORT_BY_DURATION = 2
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RecordingsScreen(
     recordings: List<RecordingItem>,
@@ -83,7 +81,7 @@ internal fun RecordingsScreen(
     onDeleteRecordings: (List<RecordingItem>) -> Unit,
     onShareRecordings: (List<RecordingItem>) -> Unit,
 ) {
-    val scrollBehavior = MiuixScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var selectedIds by remember { mutableStateOf(emptySet<Long>()) }
     var sortOption by rememberSaveable { mutableIntStateOf(SORT_BY_DATE) }
     val busy = loading || deleting
@@ -117,25 +115,7 @@ internal fun RecordingsScreen(
         }
     }
     val sortByLabel = stringResource(R.string.recordings_sort_by)
-    val sortEntry = DropdownEntry(
-        items = listOf(
-            DropdownItem(
-                text = stringResource(R.string.recordings_sort_date),
-                selected = sortOption == SORT_BY_DATE,
-                onClick = { sortOption = SORT_BY_DATE },
-            ),
-            DropdownItem(
-                text = stringResource(R.string.recordings_sort_size),
-                selected = sortOption == SORT_BY_SIZE,
-                onClick = { sortOption = SORT_BY_SIZE },
-            ),
-            DropdownItem(
-                text = stringResource(R.string.recordings_sort_duration),
-                selected = sortOption == SORT_BY_DURATION,
-                onClick = { sortOption = SORT_BY_DURATION },
-            ),
-        ),
-    )
+    var sortMenuExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(recordings) {
         val availableIds = recordings.mapTo(mutableSetOf(), RecordingItem::id)
@@ -157,12 +137,17 @@ internal fun RecordingsScreen(
     }
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = if (selectionMode) {
-                    stringResource(R.string.recordings_selected_count, selectedIds.size)
-                } else {
-                    stringResource(R.string.recordings_title)
+            LargeTopAppBar(
+                title = {
+                    Text(
+                        if (selectionMode) {
+                            stringResource(R.string.recordings_selected_count, selectedIds.size)
+                        } else {
+                            stringResource(R.string.recordings_title)
+                        },
+                    )
                 },
                 scrollBehavior = scrollBehavior,
                 actions = {
@@ -189,9 +174,9 @@ internal fun RecordingsScreen(
                                     stringResource(R.string.select_all_recordings)
                                 },
                                 tint = if (allRecordingsSelected) {
-                                    MiuixTheme.colorScheme.primary
+                                    MaterialTheme.colorScheme.primary
                                 } else {
-                                    MiuixTheme.colorScheme.onSurface
+                                    MaterialTheme.colorScheme.onSurface
                                 },
                             )
                         }
@@ -202,7 +187,7 @@ internal fun RecordingsScreen(
                             Icon(
                                 imageVector = RecorderIcons.Share,
                                 contentDescription = stringResource(R.string.action_share),
-                                tint = MiuixTheme.colorScheme.onSurface,
+                                tint = MaterialTheme.colorScheme.onSurface,
                             )
                         }
                         IconButton(
@@ -210,9 +195,9 @@ internal fun RecordingsScreen(
                             onClick = { onDeleteRecordings(selectedRecordings) },
                         ) {
                             if (deleting) {
-                                InfiniteProgressIndicator(
-                                    color = MiuixTheme.colorScheme.primary,
-                                    size = 20.dp,
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                    strokeWidth = 2.dp,
                                 )
                             } else {
                                 Icon(
@@ -220,7 +205,7 @@ internal fun RecordingsScreen(
                                     contentDescription = stringResource(
                                         R.string.delete_selected_recordings,
                                     ),
-                                    tint = MiuixTheme.colorScheme.error,
+                                    tint = MaterialTheme.colorScheme.error,
                                 )
                             }
                         }
@@ -233,19 +218,49 @@ internal fun RecordingsScreen(
                                 contentDescription = stringResource(
                                     R.string.clear_recording_selection,
                                 ),
-                                tint = MiuixTheme.colorScheme.onSurface,
+                                tint = MaterialTheme.colorScheme.onSurface,
                             )
                         }
                     } else {
-                        OverlayIconDropdownMenu(
-                            entry = sortEntry,
-                            enabled = !busy,
-                        ) {
-                            Icon(
-                                imageVector = RecorderIcons.Sort,
-                                contentDescription = sortByLabel,
-                                tint = MiuixTheme.colorScheme.onSurface,
-                            )
+                        Box {
+                            IconButton(
+                                enabled = !busy,
+                                onClick = { sortMenuExpanded = true },
+                            ) {
+                                Icon(
+                                    imageVector = RecorderIcons.Sort,
+                                    contentDescription = sortByLabel,
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = sortMenuExpanded,
+                                onDismissRequest = { sortMenuExpanded = false },
+                            ) {
+                                listOf(
+                                    SORT_BY_DATE to R.string.recordings_sort_date,
+                                    SORT_BY_SIZE to R.string.recordings_sort_size,
+                                    SORT_BY_DURATION to R.string.recordings_sort_duration,
+                                ).forEach { (option, labelRes) ->
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(labelRes)) },
+                                        trailingIcon = if (sortOption == option) {
+                                            {
+                                                Icon(
+                                                    imageVector = RecorderIcons.Check,
+                                                    contentDescription = null,
+                                                )
+                                            }
+                                        } else {
+                                            null
+                                        },
+                                        onClick = {
+                                            sortOption = option
+                                            sortMenuExpanded = false
+                                        },
+                                    )
+                                }
+                            }
                         }
                     }
                 },
@@ -253,11 +268,7 @@ internal fun RecordingsScreen(
         },
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .scrollEndHaptic()
-                .overScrollVertical()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
                 bottom = 24.dp,
@@ -286,7 +297,7 @@ internal fun RecordingsScreen(
 
                 else -> {
                     item(contentType = "title") {
-                        SmallTitle(
+                        PreferenceTitle(
                             text = stringResource(R.string.recordings_count, recordings.size),
                         )
                     }
@@ -296,14 +307,7 @@ internal fun RecordingsScreen(
                         contentType = { "recording" },
                     ) { recording ->
                         RecordingCard(
-                            modifier = Modifier.animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                                placementSpec = folmeSpring(
-                                    damping = 0.9f,
-                                    response = 0.38f,
-                                ),
-                            ),
+                            modifier = Modifier.animateItem(),
                             recording = recording,
                             selected = recording.id in selectedIds,
                             selectionMode = selectionMode,
@@ -344,11 +348,11 @@ private fun RecordingCard(
         val duration = DateUtils.formatElapsedTime(recording.durationMillis / 1_000L)
         val date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
             .format(Date(recording.dateAddedSeconds * 1_000L))
-        "$size · $duration · $date"
+        "$size Â· $duration Â· $date"
     }
     val selectionBackgroundColor by animateColorAsState(
         targetValue = if (selected) {
-            MiuixTheme.colorScheme.primary.copy(alpha = 0.12f)
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
         } else {
             Color.Transparent
         },
@@ -357,18 +361,18 @@ private fun RecordingCard(
     )
     val iconBackgroundColor by animateColorAsState(
         targetValue = if (selected) {
-            MiuixTheme.colorScheme.primary
+            MaterialTheme.colorScheme.primary
         } else {
-            MiuixTheme.colorScheme.primary.copy(alpha = 0.12f)
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
         },
         animationSpec = tween(durationMillis = 180, easing = EaseInOut),
         label = "recordingSelectionIconBackgroundColor",
     )
     val iconContentColor by animateColorAsState(
         targetValue = if (selected) {
-            MiuixTheme.colorScheme.onPrimary
+            MaterialTheme.colorScheme.onPrimary
         } else {
-            MiuixTheme.colorScheme.primary
+            MaterialTheme.colorScheme.primary
         },
         animationSpec = tween(durationMillis = 180, easing = EaseInOut),
         label = "recordingSelectionIconContentColor",
@@ -379,7 +383,9 @@ private fun RecordingCard(
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
             .padding(bottom = 10.dp),
-        insideMargin = PaddingValues(0.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ),
     ) {
         Row(
             modifier = Modifier
@@ -420,17 +426,17 @@ private fun RecordingCard(
                     text = recording.name.ifEmpty {
                         context.getString(R.string.recording_untitled)
                     },
-                    style = MiuixTheme.textStyles.main,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MiuixTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(3.dp))
                 Text(
                     text = details,
-                    style = MiuixTheme.textStyles.body2,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -446,17 +452,16 @@ private fun RecordingsLoadingState(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        InfiniteProgressIndicator(
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-            size = 28.dp,
+        CircularProgressIndicator(
+            modifier = Modifier.size(28.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             strokeWidth = 2.dp,
-            orbitingDotSize = 2.dp,
         )
         Spacer(Modifier.height(14.dp))
         Text(
             text = stringResource(R.string.recordings_loading),
-            style = MiuixTheme.textStyles.body2,
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -476,20 +481,20 @@ private fun RecordingsMessageState(
             imageVector = RecorderIcons.Recordings,
             contentDescription = null,
             modifier = Modifier.size(44.dp),
-            tint = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(14.dp))
         Text(
             text = title,
-            style = MiuixTheme.textStyles.main,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Medium,
-            color = MiuixTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(Modifier.height(4.dp))
         Text(
             text = summary,
-            style = MiuixTheme.textStyles.body2,
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

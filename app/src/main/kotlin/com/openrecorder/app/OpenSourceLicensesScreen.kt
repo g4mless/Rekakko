@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-only
+﻿// SPDX-License-Identifier: GPL-3.0-only
 
 package com.openrecorder.app
 
@@ -9,6 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -17,31 +25,22 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.Icon
-import top.yukonga.miuix.kmp.basic.IconButton
-import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
-import top.yukonga.miuix.kmp.basic.Scaffold
-import top.yukonga.miuix.kmp.basic.TopAppBar
-import top.yukonga.miuix.kmp.preference.ArrowPreference
-import top.yukonga.miuix.kmp.theme.MiuixTheme
-import top.yukonga.miuix.kmp.utils.overScrollVertical
-import top.yukonga.miuix.kmp.utils.scrollEndHaptic
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OpenSourceLicensesScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
     onOpenExternalUrl: (String) -> Unit,
 ) {
-    val scrollBehavior = MiuixScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val layoutDirection = LocalLayoutDirection.current
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.open_source_licenses),
+            LargeTopAppBar(
+                title = { Text(stringResource(R.string.open_source_licenses)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -50,7 +49,7 @@ internal fun OpenSourceLicensesScreen(
                             modifier = Modifier.graphicsLayer {
                                 if (layoutDirection == LayoutDirection.Rtl) scaleX = -1f
                             },
-                            tint = MiuixTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 },
@@ -59,11 +58,7 @@ internal fun OpenSourceLicensesScreen(
         },
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .scrollEndHaptic()
-                .overScrollVertical()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
                 bottom = 28.dp,
@@ -82,13 +77,8 @@ internal fun OpenSourceLicensesScreen(
                 }
                 val website = stringResource(library.websiteRes)
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp)
-                        .padding(top = 12.dp),
-                ) {
-                    ArrowPreference(
+                PreferenceCard(modifier = Modifier.padding(top = 8.dp)) {
+                    BasicPreference(
                         title = stringResource(library.nameRes),
                         summary = summary,
                         onClick = { onOpenExternalUrl(website) },
@@ -144,10 +134,10 @@ private val OPEN_SOURCE_LIBRARIES = listOf(
         websiteRes = R.string.url_compose_multiplatform,
     ),
     OpenSourceLibrary(
-        nameRes = R.string.library_compose_material3_window_size_class,
-        versionRes = R.string.version_compose_material3_window_size_class,
+        nameRes = R.string.library_compose_material3,
+        versionRes = R.string.version_compose_material3,
         licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_compose_multiplatform,
+        websiteRes = R.string.url_androidx,
     ),
     OpenSourceLibrary(
         nameRes = R.string.library_compose_runtime,
@@ -178,42 +168,6 @@ private val OPEN_SOURCE_LIBRARIES = listOf(
         versionRes = null,
         licenseRes = R.string.license_apache_2,
         websiteRes = R.string.url_kotlinx_coroutines,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_material_kolor,
-        versionRes = R.string.version_material_kolor,
-        licenseRes = R.string.license_mit,
-        websiteRes = R.string.url_material_kolor,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_miuix_core,
-        versionRes = R.string.version_miuix,
-        licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_miuix,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_miuix_preference,
-        versionRes = R.string.version_miuix,
-        licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_miuix,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_miuix_shader,
-        versionRes = R.string.version_miuix,
-        licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_miuix,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_miuix_squircle,
-        versionRes = R.string.version_miuix,
-        licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_miuix,
-    ),
-    OpenSourceLibrary(
-        nameRes = R.string.library_miuix_ui,
-        versionRes = R.string.version_miuix,
-        licenseRes = R.string.license_apache_2,
-        websiteRes = R.string.url_miuix,
     ),
     OpenSourceLibrary(
         nameRes = R.string.library_poko_annotations,
