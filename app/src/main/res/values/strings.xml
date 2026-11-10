@@ -121,7 +121,7 @@
     <string name="orientation_landscape">Landscape</string>
     <string name="recordings_title">Recordings</string>
     <string name="recordings_count">Recorded Videos: %1$d</string>
-    <string name="recordings_loading">Loading recordingsâ€¦</string>
+    <string name="recordings_loading">Loading recordings…</string>
     <string name="recordings_empty">No recordings</string>
     <string name="recordings_empty_summary">Your recorded videos will be here.</string>
     <string name="recordings_sort_by">Sort by</string>
@@ -151,10 +151,10 @@
     <string name="cancel_recording">Cancel recording</string>
     <string name="stop_recording">Stop recording</string>
     <string name="status_idle">No recording in progress</string>
-    <string name="status_preparing">Preparing to recordâ€¦</string>
+    <string name="status_preparing">Preparing to record…</string>
     <string name="status_recording">Recording in progress</string>
     <string name="status_paused">Recording paused</string>
-    <string name="status_saving">Saving recordingâ€¦</string>
+    <string name="status_saving">Saving recording…</string>
     <string name="status_countdown">Recording starts in %1$d</string>
     <string name="status_idle_summary">Adjust your settings, then start your recording</string>
     <string name="status_preparing_summary">The capture will begin after the countdown.</string>
@@ -174,9 +174,9 @@
     <string name="notification_channel">Screen recording</string>
     <string name="notification_recording_title">Recording your screen</string>
     <string name="notification_recording_text">Recording in progress.</string>
-    <string name="notification_paused_time">Paused â€¢ %1$s</string>
-    <string name="notification_preparing">Preparing the recordingâ€¦</string>
-    <string name="notification_saving">Processing and saving the videoâ€¦</string>
+    <string name="notification_paused_time">Paused • %1$s</string>
+    <string name="notification_preparing">Preparing the recording…</string>
+    <string name="notification_saving">Processing and saving the video…</string>
     <string name="notification_saved_title">Recording saved</string>
     <string name="notification_saved_text">Tap to watch the video.</string>
     <string name="notification_error_title">Recording error</string>

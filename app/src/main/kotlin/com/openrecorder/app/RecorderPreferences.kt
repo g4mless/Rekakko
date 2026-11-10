@@ -29,7 +29,7 @@ internal class RecorderPreferences(context: Context) {
     }
 
     fun loadAudioSource(): AudioSource = AudioSource.fromOrdinal(
-        preferences.getInt(KEY_AUDIO_SOURCE, AudioSource.NONE.ordinal),
+        preferences.getInt(KEY_AUDIO_SOURCE, AudioSource.INTERNAL.ordinal),
     )
 
     fun saveAudioSource(value: AudioSource) {

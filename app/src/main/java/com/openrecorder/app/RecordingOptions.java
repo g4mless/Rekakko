@@ -25,7 +25,7 @@ final class RecordingOptions {
     static final int VIDEO_FRAME_RATE_90_FPS = 90;
     static final int VIDEO_FRAME_RATE_60_FPS = 60;
     static final int VIDEO_FRAME_RATE_30_FPS = 30;
-    static final int DEFAULT_VIDEO_FRAME_RATE = VIDEO_FRAME_RATE_AUTO;
+    static final int DEFAULT_VIDEO_FRAME_RATE = VIDEO_FRAME_RATE_60_FPS;
 
     static final int VIDEO_CODEC_H264 = 0;
     static final int VIDEO_CODEC_H265 = 1;
