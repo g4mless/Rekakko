@@ -136,13 +136,13 @@ public final class VideoEncodingProfileTest {
     }
 
     @Test
-    public void invalidResolutionFallsBackTo1080p() {
+    public void invalidResolutionFallsBackToNative() {
         VideoEncodingProfile.Layout layout = resolve(
                 Integer.MAX_VALUE,
                 false,
                 RecordingOptions.VIDEO_BITRATE_AUTO);
 
-        assertLayout(layout, 886, 1920, 886, 1920);
+        assertLayout(layout, 1080, 2340, 1080, 2340);
     }
 
     @Test
