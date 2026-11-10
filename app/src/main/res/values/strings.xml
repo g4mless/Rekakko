@@ -33,6 +33,7 @@
     <string name="library_poko_annotations" translatable="false">Poko Annotations</string>
     <string name="library_aosp_systemui" translatable="false">Android Open Source Project (SystemUI)</string>
     <string name="library_asterisk_ng" translatable="false">AsteriskNG</string>
+    <string name="library_open_recorder" translatable="false">OpenRecorder (NoneBaiano)</string>
     <string name="license_apache_2" translatable="false">Apache-2.0</string>
     <string name="license_gpl_3" translatable="false">GPL-3.0-only</string>
     <string name="license_mit" translatable="false">MIT</string>
@@ -57,8 +58,9 @@
     <string name="url_poko" translatable="false">https://github.com/drewhamilton/Poko</string>
     <string name="url_aosp_license" translatable="false">https://source.android.com/docs/setup/about/licenses</string>
     <string name="url_asterisk_ng" translatable="false">https://github.com/Asterisk4Magisk/AsteriskNG/releases/tag/v1.4.2</string>
+    <string name="url_open_recorder" translatable="false">https://github.com/NoneBaiano/OpenRecorder</string>
     <string name="view_on_github">View source code on GitHub</string>
-    <string name="github_url" translatable="false">https://github.com/NoneBaiano/OpenRecorder</string>
+    <string name="github_url" translatable="false">https://github.com/g4mless/Rekakko</string>
     <string name="github_open_failed">Could not open GitHub.</string>
     <string name="open_license">Open license</string>
     <string name="license_url" translatable="false">https://www.gnu.org/licenses/gpl-3.0.html</string>

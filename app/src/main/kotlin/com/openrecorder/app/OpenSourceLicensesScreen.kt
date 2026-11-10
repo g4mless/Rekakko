@@ -98,6 +98,12 @@ private data class OpenSourceLibrary(
 
 private val OPEN_SOURCE_LIBRARIES = listOf(
     OpenSourceLibrary(
+        nameRes = R.string.library_open_recorder,
+        versionRes = null,
+        licenseRes = R.string.license_gpl_3,
+        websiteRes = R.string.url_open_recorder,
+    ),
+    OpenSourceLibrary(
         nameRes = R.string.library_activity_compose,
         versionRes = R.string.version_activity_compose,
         licenseRes = R.string.license_apache_2,
