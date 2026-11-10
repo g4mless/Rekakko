@@ -14,7 +14,7 @@ public final class RecordingOptionsTest {
                 RecordingOptions.VIDEO_RESOLUTION_NATIVE,
                 RecordingOptions.DEFAULT_VIDEO_RESOLUTION);
         assertEquals(
-                RecordingOptions.VIDEO_FRAME_RATE_AUTO,
+                RecordingOptions.VIDEO_FRAME_RATE_60_FPS,
                 RecordingOptions.DEFAULT_VIDEO_FRAME_RATE);
         assertEquals(
                 RecordingOptions.VIDEO_CODEC_H264,
