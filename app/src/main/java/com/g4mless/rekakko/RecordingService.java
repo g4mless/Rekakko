@@ -12,24 +12,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutorService;
@@ -81,8 +71,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
 
     private ExecutorService executor;
     private NotificationManager notificationManager;
-    private WindowManager windowManager;
-    private View floatingStopButton;
     private volatile ScreenRecorder recorder;
     private volatile Runnable pendingStart;
     private Runnable pendingNotificationRestore;
@@ -179,7 +167,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
         });
         executor.execute(() -> ScreenRecorder.deleteStaleTemporaryFiles(this));
         notificationManager = getSystemService(NotificationManager.class);
-        windowManager = getSystemService(WindowManager.class);
         IntentFilter screenOffFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(
@@ -375,11 +362,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
                 notificationManager.notify(
                         NOTIFICATION_ID,
                         createRecordingNotification(false));
-                runOnMainThread(() -> {
-                    if (!stopping.get() && !finished.get()) {
-                        showFloatingStopButton();
-                    }
-                });
             }
         } catch (Exception error) {
             if (stopping.get()) {
@@ -388,104 +370,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
             } else {
                 failRecording(error, pendingRecorder);
             }
-        }
-    }
-
-    // FLAG_SECURE keeps the window out of the MediaProjection capture, so the
-    // button is usable during recording without showing up in the video.
-    private void showFloatingStopButton() {
-        if (floatingStopButton != null
-                || !new RecorderPreferences(this).loadFloatingStopButton()
-                || !Settings.canDrawOverlays(this)) {
-            return;
-        }
-
-        float density = getResources().getDisplayMetrics().density;
-        int size = Math.round(48 * density);
-        int padding = Math.round(12 * density);
-
-        GradientDrawable background = new GradientDrawable();
-        background.setShape(GradientDrawable.OVAL);
-        background.setColor(0xCCD32F2F);
-
-        ImageView button = new ImageView(this);
-        button.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        button.setColorFilter(Color.WHITE);
-        button.setBackground(background);
-        button.setPadding(padding, padding, padding, padding);
-        button.setContentDescription(getString(R.string.action_stop));
-
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                size,
-                size,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-                        | WindowManager.LayoutParams.FLAG_SECURE,
-                PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.TOP | Gravity.START;
-        params.x = Math.round(16 * density);
-        params.y = Math.round(160 * density);
-
-        int touchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
-        button.setOnTouchListener(new View.OnTouchListener() {
-            private float downRawX;
-            private float downRawY;
-            private int startX;
-            private int startY;
-            private boolean dragging;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        downRawX = event.getRawX();
-                        downRawY = event.getRawY();
-                        startX = params.x;
-                        startY = params.y;
-                        dragging = false;
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        float dx = event.getRawX() - downRawX;
-                        float dy = event.getRawY() - downRawY;
-                        if (!dragging && Math.hypot(dx, dy) > touchSlop) {
-                            dragging = true;
-                        }
-                        if (dragging) {
-                            params.x = startX + Math.round(dx);
-                            params.y = startY + Math.round(dy);
-                            windowManager.updateViewLayout(view, params);
-                        }
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        if (!dragging) {
-                            stopAndSave();
-                        }
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-
-        try {
-            windowManager.addView(button, params);
-            floatingStopButton = button;
-        } catch (RuntimeException error) {
-            Log.e(TAG, "Unable to show floating stop button", error);
-        }
-    }
-
-    private void hideFloatingStopButton() {
-        View button = floatingStopButton;
-        if (button == null) {
-            return;
-        }
-        floatingStopButton = null;
-        try {
-            windowManager.removeView(button);
-        } catch (RuntimeException error) {
-            Log.e(TAG, "Unable to remove floating stop button", error);
         }
     }
 
@@ -787,7 +671,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
         if (finished.get() || !stopping.compareAndSet(false, true)) {
             return;
         }
-        hideFloatingStopButton();
 
         Runnable scheduledStart = pendingStart;
         if (scheduledStart != null) {
@@ -914,7 +797,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
     @Override
     public void onDestroy() {
         unregisterReceiver(screenOffReceiver);
-        hideFloatingStopButton();
         cancelPendingNotificationRestore();
         Runnable scheduledStart = pendingStart;
         if (scheduledStart != null) {

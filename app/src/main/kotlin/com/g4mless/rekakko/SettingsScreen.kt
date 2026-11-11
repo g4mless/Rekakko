@@ -59,7 +59,6 @@ internal fun SettingsScreen(
     selectedVideoFrameRateIndex: Int,
     force16By9Letterboxing: Boolean,
     stopWhenLockScreen: Boolean,
-    floatingStopButton: Boolean,
     selectedVideoBitrateIndex: Int,
     selectedVideoCodecIndex: Int,
     selectedCountdownIndex: Int,
@@ -73,7 +72,6 @@ internal fun SettingsScreen(
     onVideoFrameRateSelected: (Int) -> Unit,
     onForce16By9LetterboxingChanged: (Boolean) -> Unit,
     onStopWhenLockScreenChanged: (Boolean) -> Unit,
-    onFloatingStopButtonChanged: (Boolean) -> Unit,
     onVideoBitrateSelected: (Int) -> Unit,
     onVideoCodecSelected: (Int) -> Unit,
     onCountdownSelected: (Int) -> Unit,
@@ -319,15 +317,6 @@ internal fun SettingsScreen(
                             checked = stopWhenLockScreen,
                             enabled = optionsEnabled,
                             onCheckedChange = onStopWhenLockScreenChanged,
-                        )
-                        SwitchPreference(
-                            title = stringResource(R.string.floating_stop_button),
-                            summary = stringResource(
-                                R.string.floating_stop_button_summary,
-                            ),
-                            checked = floatingStopButton,
-                            enabled = optionsEnabled,
-                            onCheckedChange = onFloatingStopButtonChanged,
                         )
                         DropdownPreference(
                             title = stringResource(R.string.video_bitrate_label),
