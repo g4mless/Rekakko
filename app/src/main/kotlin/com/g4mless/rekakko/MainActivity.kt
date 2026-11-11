@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
 import android.provider.MediaStore
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -132,6 +133,7 @@ class MainActivity : ComponentActivity() {
                 selectedVideoFrameRate = recorderPreferences.loadVideoFrameRate(),
                 force16By9Letterboxing = recorderPreferences.loadForce16By9Letterboxing(),
                 stopWhenLockScreen = recorderPreferences.loadStopWhenLockScreen(),
+                floatingStopButton = recorderPreferences.loadFloatingStopButton(),
                 selectedVideoBitrate = recorderPreferences.loadVideoBitrate(),
                 selectedVideoCodec = recorderPreferences.loadVideoCodec(),
                 selectedCountdownSeconds = recorderPreferences.loadCountdownSeconds(),
@@ -172,6 +174,7 @@ class MainActivity : ComponentActivity() {
                                 .coerceAtLeast(0),
                             force16By9Letterboxing = settingsState.force16By9Letterboxing,
                             stopWhenLockScreen = settingsState.stopWhenLockScreen,
+                            floatingStopButton = settingsState.floatingStopButton,
                             selectedVideoBitrateIndex = VIDEO_BITRATES
                                 .indexOf(settingsState.selectedVideoBitrate)
                                 .coerceAtLeast(0),
@@ -253,6 +256,26 @@ class MainActivity : ComponentActivity() {
                                     recorderPreferences.saveStopWhenLockScreen(
                                         stopWhenLockScreen,
                                     )
+                                }
+                            },
+                            onFloatingStopButtonChanged = { floatingStopButton ->
+                                if (optionsEnabled) {
+                                    updateRecordingSettingsUiState {
+                                        it.copy(floatingStopButton = floatingStopButton)
+                                    }
+                                    recorderPreferences.saveFloatingStopButton(
+                                        floatingStopButton,
+                                    )
+                                    if (floatingStopButton &&
+                                        !Settings.canDrawOverlays(this@MainActivity)
+                                    ) {
+                                        startActivity(
+                                            Intent(
+                                                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                                Uri.parse("package:$packageName"),
+                                            ),
+                                        )
+                                    }
                                 }
                             },
                             onVideoBitrateSelected = { index ->
@@ -824,6 +847,7 @@ private data class RecordingSettingsUiState(
     val selectedVideoFrameRate: Int,
     val force16By9Letterboxing: Boolean,
     val stopWhenLockScreen: Boolean,
+    val floatingStopButton: Boolean,
     val selectedVideoBitrate: Int,
     val selectedVideoCodec: Int,
     val selectedCountdownSeconds: Int,

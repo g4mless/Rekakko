@@ -94,7 +94,16 @@ internal class RecorderPreferences(context: Context) {
         preferences.edit().putBoolean(KEY_STOP_WHEN_LOCK_SCREEN, value).apply()
     }
 
-    fun loadVideoCodec(): Int = RecordingOptions.normalizeVideoCodec(
+    fun loadFloatingStopButton(): Boolean = preferences.getBoolean(
+        KEY_FLOATING_STOP_BUTTON,
+        false,
+    )
+
+    fun saveFloatingStopButton(value: Boolean) {
+        preferences.edit().putBoolean(KEY_FLOATING_STOP_BUTTON, value).apply()
+    }
+
+    fun loadVideoCodec(): Int =RecordingOptions.normalizeVideoCodec(
         preferences.getInt(KEY_VIDEO_CODEC, RecordingOptions.DEFAULT_VIDEO_CODEC),
     )
 
@@ -144,7 +153,8 @@ internal class RecorderPreferences(context: Context) {
         const val KEY_VIDEO_FRAME_RATE = "video_frame_rate"
         const val KEY_FORCE_16_BY_9_LETTERBOXING = "force_16_by_9_letterboxing"
         const val KEY_STOP_WHEN_LOCK_SCREEN = "stop_when_lock_screen"
-        const val KEY_VIDEO_CODEC = "video_codec"
+        const val KEY_FLOATING_STOP_BUTTON = "floating_stop_button"
+        const val KEY_VIDEO_CODEC ="video_codec"
         const val KEY_COUNTDOWN_SECONDS = "countdown_seconds"
         const val KEY_ORIENTATION = "recording_orientation"
         const val KEY_NAMING_PATTERN = "naming_pattern"

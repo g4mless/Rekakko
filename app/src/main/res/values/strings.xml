@@ -95,6 +95,8 @@
     <string name="force_16_by_9_letterboxing_summary">Fit the full capture inside a 16:9 frame without cropping.</string>
     <string name="stop_when_lock_screen">Stop when lock screen</string>
     <string name="stop_when_lock_screen_summary">Stop the recording when the screen locks.</string>
+    <string name="floating_stop_button">Floating stop button</string>
+    <string name="floating_stop_button_summary">Show a draggable stop button over other apps while recording. It is hidden from the recording.</string>
     <string name="video_bitrate_label">Video bitrate</string>
     <string name="video_bitrate_auto">Automatic</string>
     <string name="video_bitrate_4">4 Mbps</string>
